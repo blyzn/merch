@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+
+    <title>Merch Store</title>
+    <link rel="stylesheet" href="style/prod-st.css" />
+    <link rel="stylesheet" href="style/clothing.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <a class="logo-dest" href="index.html"
+          ><img class="logo" src="assets/logo.png"
+        /></a>
+        <div class="hamburger-btn" id="hamburgerBtn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+      <div class="se-pe-ca">
+        <a class="user-dest" href="user.html"
+          ><i class="fa-regular fa-user"></i
+        ></a>
+
+        <!-- Cart Icon -->
+        <div id="cartIcon" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cartCount">0</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button id="closeCart">&times;</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div style="margin-top: 20px; text-align: center">
+        <div class="cart-footer">
+          <button id="checkoutBtn" class="checkout-btn">Proceed</button>
+        </div>
+      </div>
+    </div>
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <!-- Fullscreen popup navigation -->
+    <div class="mobile-nav-popup" id="mobileNavPopup">
+      <div class="mobile-nav-content">
+        <!-- Close "X" button in top-right -->
+        <div class="close-btn" id="closeBtn">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <!-- Left: Logo -->
+        <img class="mobile-logo" src="assets/logo.png" alt="Logo" />
+
+        <!-- Right: Links -->
+        <div class="mobile-links">
+          <a href="clothing.html">Clothing</a>
+          <a href="accessories.html">Accessories</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup HTML -->
+    <div class="popup-overlay" id="popup">
+      <div class="popup">
+        <button class="close-btn" id="closePopup">&times;</button>
+        <h2>JOIN OUR COMMUNITY</h2>
+        <p>
+          Be the first to hear about new releases, community updates and
+          exclusive offers.
+        </p>
+        <input type="email" placeholder="Email" required />
+        <label
+          ><input type="checkbox" /> I agree to receive marketing
+          communications</label
+        >
+        <button class="s-u">Sign up</button>
+        <p>
+          *By completing this form you are signing up to receive our emails and
+          can unsubscribe at any time. <br />
+          See our
+          <a href="#" target="_blank">privacy policy</a>.
+        </p>
+      </div>
+    </div>
+
+    <section class="clothing">
+      <h2>ACCESSORIES</h2>
+      <div class="home-anchor">
+        <a href="index.html">Home ></a>
+        <span>Accessories</span>
+      </div>
+
+    <div class="also-like">
+      <div class="slider-wrapper">
+        <button class="slider-btn prev" style="display: none">&#10094;</button>
+        <div class="related-list">
+          <div class="slider-track">
+            <div class="re-li-des">
+              <a href="prod10.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-10/prod10.1.webp"
+                    alt="Accessories 10"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-10/prod10.2.webp"
+                    alt="Accessories 10 Hover"
+                  />
+                </div>
+                <p>Glasses</p>
+                <h5>3 PCS Retro Glasses</h5>
+                <p>$15</p>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- Numbered pagination: click a number to load the next set of products -->
+        <div class="prod-pagination" id="prodPagination"></div>
+      </div>
+    </section>
+    <footer>
+      <div class="footer-content">
+        <div class="fo-in">
+          <h5>GET YOURS NOW</h5>
+          <p>
+            <a href="#">SUBSCRIBE TO RECEIVE THE LATEST NEWS AND OFFERS</a>
+          </p>
+          <div class="so-co">
+            <i class="fa-brands fa-tiktok socials"></i>
+            <i class="fa-brands fa-instagram socials"></i>
+            <i class="fa-brands fa-youtube socials"></i>
+            <i class="fa-brands fa-x-twitter socials"></i>
+            <i class="fa-brands fa-facebook-f socials"></i>
+            <i class="fa-regular fa-envelope socials"></i>
+          </div>
+          <div class="co-te-pr">
+            <p>© Copyright 2025 Merch Store All rights reserved.</p>
+            <p><a href="#">Terms of Service</a></p>
+            <p><a href="#">Privacy Policy</a></p>
+          </div>
+        </div>
+
+        <div class="su">
+          <div class="su-h5-p2">
+            <h5>SUPPORT</h5>
+            <p><a href="#">FAQs</a></p>
+            <p><a href="#">Contact</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const basePrice = 20;
+      const colorSelect = document.getElementById("color");
+      const sizeSelect = document.getElementById("size");
+      const quantityInput = document.getElementById("quantity");
+      const priceSpan = document.getElementById("price");
+      const productImage = document.getElementById("productImage");
+
+      const defaultColor = "red";
+      colorSelect.value = defaultColor;
+
+      const updateImage = () => {
+        productImage.src = `product/product-1/Shirt-${
+          colorSelect.selectedIndex + 1
+        }.jpg`;
+      };
+
+      const updatePrice = () => {
+        const sizePrice = parseInt(sizeSelect.selectedOptions[0].dataset.price);
+        const quantity = parseInt(quantityInput.value);
+        const total = (basePrice + sizePrice) * quantity;
+        priceSpan.textContent = total;
+      };
+
+      const addToCart = () => {
+        const product = {
+          color: colorSelect.value,
+          size: sizeSelect.value,
+          quantity: quantityInput.value,
+          totalPrice: priceSpan.textContent,
+        };
+        localStorage.setItem("cart", JSON.stringify(product));
+        window.location.href = "checkout.html";
+      };
+
+      colorSelect.addEventListener("change", updateImage);
+      sizeSelect.addEventListener("change", updatePrice);
+      quantityInput.addEventListener("input", updatePrice);
+
+      updateImage();
+      updatePrice();
+    </script>
+    <script src="script/ham.js"></script>
+    <script src="script/join-us-now.js"></script>
+    <script src="script/cart.js" defer></script>
+    <script src="script/prod-func.js"></script>
+    <script src="script/prev-next.js"></script>
+    <script src="script/abt.js"></script>
+    <script src="script/prod-pagination.js"></script>
+  </script>
+</html>

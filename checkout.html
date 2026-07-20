@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+
+    <title>Merch Store | Checkout</title>
+    <link rel="stylesheet" href="style/prod-st.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css"
+    />
+
+    <!-- Firebase (Authentication + Firestore) — used to save order
+    history for logged-in customers. Guests can still check out fine;
+    this is additive, not a requirement. -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+    <script src="script/firebase-config.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+      }
+
+      .checkout-container {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 40px 20px;
+        max-width: 1200px;
+        margin: auto;
+        gap: 20px;
+      }
+
+      .form-section,
+      .cart-section {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        min-width: 320px;
+      }
+
+      .form-section h2,
+      .cart-section h2 {
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      button {
+        padding: 12px 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .cart-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .cart-item img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+      }
+
+      @media (max-width: 768px) {
+        .checkout-container {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <a class="logo-dest" href="index.html"
+          ><img class="logo" src="assets/logo.png"
+        /></a>
+        <div class="hamburger-btn" id="hamburgerBtn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+      <div class="se-pe-ca">
+        <a class="user-dest" href="user.html"
+          ><i class="fa-regular fa-user"></i
+        ></a>
+      </div>
+    </nav>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button id="closeCart" type="button">&times;</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div style="margin-top: 20px; text-align: center">
+        <div class="cart-footer">
+          <button id="checkoutBtn" class="checkout-btn">Proceed</button>
+        </div>
+      </div>
+    </div>
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <!-- Fullscreen popup navigation -->
+    <div class="mobile-nav-popup" id="mobileNavPopup">
+      <div class="mobile-nav-content">
+        <!-- Close "X" button in top-right -->
+        <div class="close-btn" id="closeBtn">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <!-- Left: Logo -->
+        <img class="mobile-logo" src="assets/logo.png" alt="Logo" />
+
+        <!-- Right: Links -->
+        <div class="mobile-links">
+          <a href="clothing.html">Clothing</a>
+          <a href="accessories.html">Accessories</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-container">
+      <!-- FORM SECTION -->
+      <div class="form-section">
+        <h2>CHECKOUT</h2>
+        <form id="checkoutForm">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="middleName">Middle Name</label>
+            <input type="text" id="middleName" />
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <div style="display: flex; gap: 8px">
+              <input type="tel" id="phone" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="payment">Payment Method</label>
+            <select id="payment" required>
+              <option value="">Select Payment Method</option>
+              <option value="credit">Credit Card</option>
+              <option value="ewallet">E-Wallet</option>
+              <option value="cod">Cash on Delivery</option>
+            </select>
+          </div>
+
+          <!-- Credit Card Fields -->
+          <div id="creditFields" class="hidden">
+            <div class="form-group">
+              <label for="cardNumber">Card Number</label>
+              <input type="text" id="cardNumber" maxlength="19" />
+            </div>
+            <div class="form-group">
+              <label for="expiry">Expiration Date</label>
+              <input type="month" id="expiry" />
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" maxlength="4" />
+            </div>
+          </div>
+
+          <!-- E-Wallet Fields -->
+          <div id="ewalletFields" class="hidden">
+            <div class="form-group">
+              <label for="walletType">Select Wallet</label>
+              <select id="walletType">
+                <option value="">Choose</option>
+                <option value="gcash">GCash</option>
+                <option value="paymaya">PayMaya</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="walletPhone">Wallet Phone Number</label>
+              <input type="tel" id="walletPhone" />
+            </div>
+          </div>
+
+          <button type="submit">Place Order</button>
+        </form>
+      </div>
+
+      <!-- CART SECTION -->
+      <div class="cart-section">
+        <h2>Your Order</h2>
+        <div id="checkoutCart"></div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-content">
+        <div class="fo-in">
+          <h5>GET YOURS NOW</h5>
+          <p>
+            <a href="#">SUBSCRIBE TO RECEIVE THE LATEST NEWS AND OFFERS</a>
+          </p>
+          <div class="so-co">
+            <i class="fa-brands fa-tiktok socials"></i>
+            <i class="fa-brands fa-instagram socials"></i>
+            <i class="fa-brands fa-youtube socials"></i>
+            <i class="fa-brands fa-x-twitter socials"></i>
+            <i class="fa-brands fa-facebook-f socials"></i>
+            <i class="fa-regular fa-envelope socials"></i>
+          </div>
+          <div class="co-te-pr">
+            <p>© Copyright 2025 Merch All rights reserved.</p>
+            <p><a href="#">Terms of Service</a></p>
+            <p><a href="#">Privacy Policy</a></p>
+          </div>
+        </div>
+
+        <div class="su">
+          <div class="su-h5-p2">
+            <h5>SUPPORT</h5>
+            <p><a href="#">FAQs</a></p>
+            <p><a href="#">Contact</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="script/ham.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script>
+      // Track whether someone's logged in, WITHOUT redirecting guests —
+      // unlike user.html, checkout stays open to everyone. If someone
+      // is logged in, we'll also save their order to Firestore for
+      // order history; guests just get the email confirmation.
+      let currentUser = null;
+      auth.onAuthStateChanged((user) => {
+        currentUser = user;
+      });
+
+      // ------------------------------------------------------------
+      // Shipping fee + tax rate by country.
+      //
+      // This is a simple flat-rate approximation, NOT real tax
+      // compliance — real sales tax/VAT/GST rules vary by state,
+      // province, or even product type within a country, and get
+      // legally complicated fast. For a small store this is a
+      // reasonable stand-in; if this store ever needs to be legally
+      // accurate about tax, look at a real tax service (e.g. Stripe
+      // Tax, TaxJar, Avalara) instead of hand-rolled rates.
+      //
+      // Keyed by ISO2 country code (lowercase) — matches what the
+      // phone input's country flag dropdown already gives us, so no
+      // extra "Country" field is needed on the form.
+      // ------------------------------------------------------------
+      const SHIPPING_TAX_RATES = {
+        ph: { shipping: 4.0, taxRate: 0.12 }, // Philippines — 12% VAT
+        us: { shipping: 8.0, taxRate: 0.07 }, // rough average US sales tax
+        gb: { shipping: 9.0, taxRate: 0.2 }, // UK VAT
+        ca: { shipping: 9.0, taxRate: 0.13 }, // rough average Canada GST/HST
+        au: { shipping: 10.0, taxRate: 0.1 }, // Australia GST
+        de: { shipping: 9.5, taxRate: 0.19 }, // Germany VAT (EU stand-in)
+        jp: { shipping: 10.0, taxRate: 0.1 }, // Japan consumption tax
+        in: { shipping: 6.0, taxRate: 0.18 }, // India GST
+        sg: { shipping: 7.0, taxRate: 0.09 }, // Singapore GST
+        default: { shipping: 12.0, taxRate: 0.0 }, // fallback for anywhere else
+      };
+
+      function getRatesForCountry(iso2) {
+        return SHIPPING_TAX_RATES[iso2] || SHIPPING_TAX_RATES.default;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const checkoutCart = document.getElementById("checkoutCart");
+
+        function renderCart() {
+          const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+          if (cart.length === 0) {
+            checkoutCart.innerHTML = "<p>Your cart is empty.</p>";
+            return;
+          }
+
+          let subtotal = 0;
+
+          const itemsHTML = cart
+            .map((item, index) => {
+              const itemTotal = item.price * item.qty;
+              subtotal += itemTotal;
+              return `
+          <div class="cart-item" data-index="${index}">
+            <img src="${item.image}" alt="${item.title}" />
+            <div class="item-details">
+              <strong>${item.title}</strong><br>
+              $${item.price} x ${item.qty} = $${itemTotal.toFixed(2)}
+            </div>
+            <i class="fas fa-trash delete-icon" data-index="${index}" title="Remove item" style="cursor: pointer;"></i>
+          </div>
+        `;
+            })
+            .join("");
+
+          // Use the country already selected in the phone field's flag
+          // dropdown to look up shipping + tax (see note above the
+          // SHIPPING_TAX_RATES table).
+          const iso2 = window.iti?.getSelectedCountryData()?.iso2 || "default";
+          const rates = getRatesForCountry(iso2);
+          const shipping = rates.shipping;
+          const tax = subtotal * rates.taxRate;
+          const total = subtotal + shipping + tax;
+
+          const totalHTML = `
+      <hr style="margin: 20px 0;">
+      <div style="text-align: right; line-height: 1.8;">
+        <div>Subtotal: $${subtotal.toFixed(2)}</div>
+        <div>Shipping: $${shipping.toFixed(2)}</div>
+        <div>Tax: $${tax.toFixed(2)}</div>
+        <div style="font-size: 18px; font-weight: bold;">
+          Total: $${total.toFixed(2)}
+        </div>
+      </div>
+    `;
+
+          checkoutCart.innerHTML = itemsHTML + totalHTML;
+
+          // 🔁 Attach delete functionality after rendering
+          checkoutCart.querySelectorAll(".delete-icon").forEach((icon) => {
+            icon.addEventListener("click", (e) => {
+              const index = parseInt(e.target.getAttribute("data-index"), 10);
+              const updatedCart = JSON.parse(
+                localStorage.getItem("cart") || "[]",
+              );
+              updatedCart.splice(index, 1); // Remove item
+              localStorage.setItem("cart", JSON.stringify(updatedCart)); // Update localStorage
+              renderCart(); // Re-render cart (no reload)
+            });
+          });
+        }
+
+        window.renderCart = renderCart; // exposed so the country-flag listener below can trigger a re-render
+        renderCart(); // Initial render
+
+        // Payment method selection logic
+        const payment = document.getElementById("payment");
+        const creditFields = document.getElementById("creditFields");
+        const ewalletFields = document.getElementById("ewalletFields");
+
+        payment.addEventListener("change", (e) => {
+          const method = e.target.value;
+          creditFields.classList.add("hidden");
+          ewalletFields.classList.add("hidden");
+
+          if (method === "credit") {
+            creditFields.classList.remove("hidden");
+          } else if (method === "ewallet") {
+            ewalletFields.classList.remove("hidden");
+          }
+        });
+      });
+
+      // Phone formatting & validation remains unchanged:
+      const phoneInput = document.getElementById("phone");
+      const countryCodeSelect = document.getElementById("countryCode");
+
+      const phoneFormats = {
+        "+63": { format: [4, 3, 4], maxLength: 11 },
+        "+1": { format: [3, 3, 4], maxLength: 10 },
+        "+44": { format: [5, 6], maxLength: 11 },
+        "+61": { format: [4, 3, 3], maxLength: 10 },
+        "+91": { format: [5, 5], maxLength: 10 },
+        "+81": { format: [2, 4, 4], maxLength: 10 },
+        "+49": { format: [3, 3, 4], maxLength: 10 },
+      };
+
+      function formatNumber(raw, formatPattern) {
+        const digits = raw.replace(/\D/g, "").substring(
+          0,
+          formatPattern.reduce((a, b) => a + b, 0),
+        );
+        let formatted = "";
+        let index = 0;
+
+        for (let i = 0; i < formatPattern.length; i++) {
+          const part = digits.substring(index, index + formatPattern[i]);
+          if (part) {
+            formatted += part;
+            if (
+              i < formatPattern.length - 1 &&
+              part.length === formatPattern[i]
+            ) {
+              formatted += " ";
+            }
+          }
+          index += formatPattern[i];
+        }
+
+        return formatted;
+      }
+
+      phoneInput.addEventListener("input", (e) => {
+        const selectionStart = phoneInput.selectionStart;
+        const oldValue = phoneInput.value;
+        const code = countryCodeSelect?.value || "+63";
+        const config = phoneFormats[code] || phoneFormats["+63"];
+
+        const digitsOnly = oldValue
+          .replace(/\D/g, "")
+          .substring(0, config.maxLength);
+        const formatted = formatNumber(digitsOnly, config.format);
+
+        const adjustment = formatted.length - oldValue.length;
+        phoneInput.value = formatted;
+        phoneInput.setSelectionRange(
+          selectionStart + adjustment,
+          selectionStart + adjustment,
+        );
+      });
+
+      // intlTelInput init
+      const phoneInputField = document.querySelector("#phone");
+      const iti = window.intlTelInput(phoneInputField, {
+        initialCountry: "ph",
+        preferredCountries: ["ph", "us", "gb"],
+        utilsScript:
+          "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+      });
+      window.iti = iti; // so renderCart() above can read the selected country
+
+      // Recompute shipping/tax whenever the customer changes the country
+      // in the phone field's flag dropdown.
+      phoneInputField.addEventListener("countrychange", () => {
+        window.renderCart && window.renderCart();
+      });
+
+      // On form submit, set phone number format
+      document
+        .getElementById("checkoutForm")
+        .addEventListener("submit", function (e) {
+          const phoneInput = document.getElementById("phone");
+          phoneInput.value = iti.getNumber(); // E.164 format
+        });
+
+      const EMAILJS_PUBLIC_KEY = "";
+      const EMAILJS_SERVICE_ID = "";
+      const EMAILJS_TEMPLATE_ID = "";
+
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+      document
+        .getElementById("checkoutForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // stop the page from just reloading
+
+          const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+          if (cart.length === 0) {
+            alert("Your cart is empty.");
+            return;
+          }
+
+          const iso2 = window.iti?.getSelectedCountryData()?.iso2 || "default";
+          const rates = getRatesForCountry(iso2);
+          const subtotal = cart.reduce(
+            (sum, item) => sum + item.price * item.qty,
+            0,
+          );
+          const shipping = rates.shipping;
+          const tax = subtotal * rates.taxRate;
+          const total = subtotal + shipping + tax;
+
+          // Shape matches EmailJS's built-in "Order Confirmation"
+          // template (cost.shipping / cost.tax / cost.total, and each
+          // item having name/qty/price/image_url — "qty" here because
+          // that's what the template's placeholder was renamed to,
+          // matching this project's own field name instead of the
+          // template's original "units").
+          const templateParams = {
+            email: document.getElementById("email").value,
+            order_id: `ORD-${Date.now()}`,
+            cost: {
+              shipping: shipping.toFixed(2),
+              tax: tax.toFixed(2),
+              total: total.toFixed(2),
+            },
+            orders: cart.map((item) => ({
+              name: item.title,
+              qty: item.qty,
+              price: item.price,
+              image_url: item.image, // must be a public URL once the site is deployed — see earlier logo note
+            })),
+            // Extra fields, in case the template also uses these:
+            customer_name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`,
+            customer_phone: document.getElementById("phone").value,
+            customer_address: document.getElementById("address").value,
+            payment_method: document.getElementById("payment").value,
+          };
+
+          const submitBtn = e.target.querySelector('button[type="submit"]');
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Placing order…";
+
+          // Save to order history if someone's logged in. Guests just
+          // get the email confirmation — this is a bonus for account
+          // holders, not a requirement to check out. Runs independently
+          // of the email send below, so a hiccup in one doesn't block
+          // the other.
+          function saveOrderToHistory() {
+            if (!currentUser) return Promise.resolve(); // guest — nothing to save
+            return db
+              .collection("users")
+              .doc(currentUser.uid)
+              .collection("orders")
+              .doc(templateParams.order_id)
+              .set({
+                orderId: templateParams.order_id,
+                items: templateParams.orders,
+                cost: templateParams.cost,
+                customerName: templateParams.customer_name,
+                customerAddress: templateParams.customer_address,
+                paymentMethod: templateParams.payment_method,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              })
+              .catch((err) => {
+                console.error("Couldn't save order to history:", err);
+                // Don't block the order over this — the email notification
+                // is the real order record; history is a bonus.
+              });
+          }
+          saveOrderToHistory();
+
+          emailjs
+            .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+            .then(() => {
+              alert("Order placed! Thanks for your purchase.");
+              localStorage.removeItem("cart");
+              window.location.href = "index.html";
+            })
+            .catch((err) => {
+              console.error("EmailJS error:", err);
+              alert(
+                "Your order went through, but the store notification email couldn't be sent. (Store owner: check the EmailJS setup in checkout.html.)",
+              );
+              localStorage.removeItem("cart");
+              window.location.href = "index.html";
+            })
+            .finally(() => {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Place Order";
+            });
+        });
+    </script>
+  </body>
+</html>

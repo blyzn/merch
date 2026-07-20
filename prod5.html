@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+
+    <title>ACLC Store</title>
+    <link rel="stylesheet" href="style/prod-st.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <a class="logo-dest" href="index.html"
+          ><img class="logo" src="assets/logo.png"
+        /></a>
+        <div class="hamburger-btn" id="hamburgerBtn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+      <div class="se-pe-ca">
+        <a class="user-dest" href="user.html"
+          ><i class="fa-regular fa-user"></i
+        ></a>
+        <i class="fa-regular fa-user"></i>
+
+        <!-- Cart Icon -->
+        <div id="cartIcon" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cartCount">0</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button id="closeCart">&times;</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div style="margin-top: 20px; text-align: center">
+        <div class="cart-footer">
+          <button id="checkoutBtn" class="checkout-btn">Proceed</button>
+        </div>
+      </div>
+    </div>
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <!-- Fullscreen popup navigation -->
+    <div class="mobile-nav-popup" id="mobileNavPopup">
+      <div class="mobile-nav-content">
+        <!-- Close "X" button in top-right -->
+        <div class="close-btn" id="closeBtn">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <!-- Left: Logo -->
+        <img class="mobile-logo" src="assets/logo.png" alt="Logo" />
+
+        <!-- Right: Links -->
+        <div class="mobile-links">
+          <a href="clothing.html">Clothing</a>
+          <a href="accessories.html">Accessories</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup HTML -->
+    <div class="popup-overlay" id="popup">
+      <div class="popup">
+        <button class="close-btn" id="closePopup">&times;</button>
+        <h2>JOIN OUR COMMUNITY</h2>
+        <p>
+          Be the first to hear about new releases, community updates and
+          exclusive offers.
+        </p>
+        <input type="email" placeholder="Email" required />
+        <label
+          ><input type="checkbox" /> I agree to receive marketing
+          communications</label
+        >
+        <button class="s-u">Sign up</button>
+        <p>
+          *By completing this form you are signing up to receive our emails and
+          can unsubscribe at any time. <br />
+          See our
+          <a href="https://privacy.aclctaytay.com" target="_blank"
+            >privacy policy</a
+          >.
+        </p>
+      </div>
+    </div>
+
+    <div class="prod-det">
+      <div class="product-img">
+        <img class="product-image" id="productImage" />
+      </div>
+
+      <div class="option-container">
+        <div class="options">
+          <div class="ho-ca-na">
+            <a href="home.html">Home /</a>
+            <a href="clothing.html">Clothing /</a>
+            <span>Error [404]</span>
+          </div>
+          <h5 class="product-title-h5" id="productTitle">ERROR [404]</h5>
+          <div class="price">Price: $<span id="price">25</span></div>
+          <!-- Color Circles -->
+          <div class="color-options" id="colorOptions">
+            <label>
+              <input
+                type="radio"
+                name="color"
+                value="Black"
+                data-image="product/product-5/prod5.1.webp"
+                checked
+              />
+            </label>
+          </div>
+
+          <label for="size">Size (optional feature):</label>
+          <select id="size">
+            <option value="Small" data-price="0">Small</option>
+            <option value="Medium" data-price="5">Medium (+$5)</option>
+            <option value="Large" data-price="10">Large (+$10)</option>
+          </select>
+
+          <label for="quantity">Quantity:</label>
+          <select id="quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <button class="a-t-c">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="abt">
+      <div class="dropdown">
+        <h4 class="dropdown-header">
+          About <i class="fa-solid fa-angle-down arrow"></i>
+        </h4>
+        <p class="dropdown-content">
+          Official merch item. Stylish, comfy, and perfect for fans. 100% cotton
+          material. Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Impedit molestias rem amet consectetur ea provident velit, odit
+          assumenda at, voluptates minus repudiandae vel, id reprehenderit
+          quaerat fugiat alias. Ad, repudiandae.
+        </p>
+      </div>
+
+      <div class="dropdown">
+        <h4 class="dropdown-header">
+          Imports & Pre-order <i class="fa-solid fa-angle-down arrow"></i>
+        </h4>
+        <p class="dropdown-content">
+          This is a pre-order item. Shipping will begin within 2-4 weeks after
+          order confirmation. Lorem ipsum dolor sit amet, consectetur
+          adipisicing elit. Enim sint, laudantium expedita ad dignissimos
+          molestiae quas molestias eos earum veritatis. Dolor eaque architecto
+          eveniet hic fuga, sed quaerat doloremque illo?
+        </p>
+      </div>
+
+      <div class="dropdown">
+        <h4 class="dropdown-header">
+          Shipping & Returns <i class="fa-solid fa-angle-down arrow"></i>
+        </h4>
+        <p class="dropdown-content">
+          Shipping available nationwide. Returns accepted within 14 days for
+          unused items. Lorem, ipsum dolor sit amet consectetur adipisicing
+          elit. Est odit dignissimos labore exercitationem enim nemo. Veritatis,
+          nesciunt reiciendis temporibus facilis harum dignissimos, ipsa, ab
+          praesentium ea aliquid debitis consequatur voluptatibus.
+        </p>
+      </div>
+    </div>
+
+    <div class="also-like">
+      <h4>You may also like</h4>
+      <div class="related-list">
+        <div class="re-li-des">
+          <a href="prod1.html">
+            <div class="img-wrapper">
+              <img
+                class="main-img"
+                src="product/product-1/prod1.1.jpg"
+                alt="Shirt 1"
+              />
+              <img
+                class="hover-img"
+                src="product/product-1/prod1.2.jpg"
+                alt="Shirt 1 Hover"
+              />
+            </div>
+            <p>Shirt</p>
+            <h5>SVRL Neck Sweatshirt</h5>
+            <p>$20</p>
+          </a>
+        </div>
+
+        <div class="re-li-des">
+          <a href="prod2.html">
+            <div class="img-wrapper">
+              <img
+                class="main-img"
+                src="product/product-2/prod2.1.webp"
+                alt="Shirt 1"
+              />
+              <img
+                class="hover-img"
+                src="product/product-2/prod2.2.webp"
+                alt="Shirt 1 Hover"
+              />
+            </div>
+            <p>Shirt</p>
+            <h5>Eternal 1997</h5>
+            <p>$20</p>
+          </a>
+        </div>
+
+        <div class="re-li-des">
+          <a href="prod3.html">
+            <div class="img-wrapper">
+              <img
+                class="main-img"
+                src="product/product-3/prod3.1.webp"
+                alt="Shirt 2"
+              />
+              <img
+                class="hover-img"
+                src="product/product-3/prod3.2.webp"
+                alt="Shirt 2 Hover"
+              />
+            </div>
+            <p>Shirt</p>
+            <h5>Renaissance</h5>
+            <p>$22</p>
+          </a>
+        </div>
+
+        <div class="re-li-des">
+          <a href="prod4.html">
+            <div class="img-wrapper">
+              <img
+                class="main-img"
+                src="product/product-5/prod5.1.webp"
+                alt="Shirt 4"
+              />
+              <img
+                class="hover-img"
+                src="product/product-5/prod5.2.webp"
+                alt="Shirt 4 Hover"
+              />
+            </div>
+            <p>Shirt</p>
+            <h5>Error [404]</h5>
+            <p>$25</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <div class="fo-in">
+          <h5>GET YOURS NOW</h5>
+          <p>
+            <a href="#">SUBSCRIBE TO RECEIVE THE LATEST NEWS AND OFFERS</a>
+          </p>
+          <div class="so-co">
+            <i class="fa-brands fa-tiktok socials"></i>
+            <i class="fa-brands fa-instagram socials"></i>
+            <i class="fa-brands fa-youtube socials"></i>
+            <i class="fa-brands fa-x-twitter socials"></i>
+            <i class="fa-brands fa-facebook-f socials"></i>
+            <i class="fa-regular fa-envelope socials"></i>
+          </div>
+          <div class="co-te-pr">
+            <p>© Copyright 2025 ACLC Taytay All rights reserved.</p>
+            <p><a href="#">Terms of Service</a></p>
+            <p><a href="#">Privacy Policy</a></p>
+          </div>
+        </div>
+
+        <div class="su">
+          <div class="su-h5-p2">
+            <h5>SUPPORT</h5>
+            <p><a href="#">FAQs</a></p>
+            <p><a href="#">Contact</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="script/ham.js"></script>
+    <script src="script/join-us-now.js"></script>
+    <script src="script/cart.js" defer></script>
+    <script src="script/prod-func.js"></script>
+    <script src="script/abt.js"></script>
+  </body>
+</html>

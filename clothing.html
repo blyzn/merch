@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+
+    <title>Merch Store</title>
+    <link rel="stylesheet" href="style/prod-st.css" />
+    <link rel="stylesheet" href="style/clothing.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <a class="logo-dest" href="index.html"
+          ><img class="logo" src="assets/logo.png"
+        /></a>
+        <div class="hamburger-btn" id="hamburgerBtn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+      <div class="se-pe-ca">
+        <a class="user-dest" href="user.html"
+          ><i class="fa-regular fa-user"></i
+        ></a>
+
+        <!-- Cart Icon -->
+        <div id="cartIcon" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cartCount">0</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button id="closeCart">&times;</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div style="margin-top: 20px; text-align: center">
+        <div class="cart-footer">
+          <button id="checkoutBtn" class="checkout-btn">Proceed</button>
+        </div>
+      </div>
+    </div>
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <!-- Fullscreen popup navigation -->
+    <div class="mobile-nav-popup" id="mobileNavPopup">
+      <div class="mobile-nav-content">
+        <!-- Close "X" button in top-right -->
+        <div class="close-btn" id="closeBtn">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <!-- Left: Logo -->
+        <img class="mobile-logo" src="assets/logo.png" alt="Logo" />
+
+        <!-- Right: Links -->
+        <div class="mobile-links">
+          <a href="clothing.html">Clothing</a>
+          <a href="accessories.html">Accessories</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup HTML -->
+    <div class="popup-overlay" id="popup">
+      <div class="popup">
+        <button class="close-btn" id="closePopup">&times;</button>
+        <h2>JOIN OUR COMMUNITY</h2>
+        <p>
+          Be the first to hear about new releases, community updates and
+          exclusive offers.
+        </p>
+        <input type="email" placeholder="Email" required />
+        <label
+          ><input type="checkbox" /> I agree to receive marketing
+          communications</label
+        >
+        <button class="s-u">Sign up</button>
+        <p>
+          *By completing this form you are signing up to receive our emails and
+          can unsubscribe at any time. <br />
+          See our
+          <a href="#" target="_blank">privacy policy</a>.
+        </p>
+      </div>
+    </div>
+
+    <section class="clothing">
+      <h2>CLOTHING</h2>
+      <div class="home-anchor">
+        <a href="index.html">Home ></a>
+        <span>Clothing</span>
+      </div>
+
+    <div class="also-like">
+      <div class="slider-wrapper">
+        <button class="slider-btn prev" style="display: none">&#10094;</button>
+        <div class="related-list">
+          <div class="slider-track">
+            <div class="re-li-des">
+              <a href="prod1.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-1/prod1.1.jpg"
+                    alt="Shirt 1"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-1/prod1.2.jpg"
+                    alt="Shirt 1 Hover"
+                  />
+                </div>
+                <p>Sweater</p>
+                <h5>SVRL Neck Sweatshirt</h5>
+                <p>$21</p>
+              </a>
+            </div>
+
+            <div class="re-li-des">
+              <a href="prod2.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-2/prod2.1.webp"
+                    alt="Shirt 2"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-2/prod2.2.webp"
+                    alt="Shirt 2 Hover"
+                  />
+                </div>
+                <p>Jacket</p>
+                <h5>Eternal 1997</h5>
+                <p>$20</p>
+              </a>
+            </div>
+
+            <div class="re-li-des">
+              <a href="prod3.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-3/prod3.1.webp"
+                    alt="Shirt 3"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-3/prod3.2.webp"
+                    alt="Shirt 3 Hover"
+                  />
+                </div>
+                <p>Jacket</p>
+                <h5>Renaissance</h5>
+                <p>$22</p>
+              </a>
+            </div>
+
+            <div class="re-li-des">
+              <a href="prod4.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-4/prod4.1.webp"
+                    alt="Shirt 4"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-4/prod4.2.webp"
+                    alt="Shirt 4 Hover"
+                  />
+                </div>
+                <p>Jacket</p>
+                <h5>Forever</h5>
+                <p>$24</p>
+              </a>
+            </div>
+
+            <div class="re-li-des">
+              <a href="prod5.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-5/prod5.1.webp"
+                    alt="Shirt 4"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-5/prod5.2.webp"
+                    alt="Shirt 4 Hover"
+                  />
+                </div>
+                <p>Shirt</p>
+                <h5>Error [404]</h5>
+                <p>$25</p>
+              </a>
+            </div>
+
+             <div class="re-li-des">
+              <a href="prod6.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-6/prod6.1.webp"
+                    alt="Shirt 6"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-6/prod6.2.webp"
+                    alt="Shirt 6 Hover"
+                  />
+                </div>
+                <p>T-Shirt</p>
+                <h5>Truth and Life</h5>
+                <p>$24</p>
+              </a>
+            </div>
+
+            <div class="re-li-des">
+              <a href="prod7.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-7/prod7.1.webp"
+                    alt="Shirt 7"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-7/prod7.2.webp"
+                    alt="Shirt 7 Hover"
+                  />
+                </div>
+                <p>Pants</p>
+                <h5>Holiday</h5>
+                <p>$24</p>
+              </a>
+            </div>
+
+            <div class="re-li-des">
+              <a href="prod8.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-8/prod8.1.webp"
+                    alt="Shirt 8"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-8/prod8.2.webp"
+                    alt="Shirt 8 Hover"
+                  />
+                </div>
+                <p>T-Shirt</p>
+                <h5>Mysterious & Beautiful Face</h5>
+                <p>$26</p>
+              </a>
+            </div>
+
+            <div class="re-li-des">
+              <a href="prod9.html">
+                <div class="img-wrapper">
+                  <img
+                    class="main-img"
+                    src="product/product-9/prod9.1.webp"
+                    alt="Shirt 9"
+                  />
+                  <img
+                    class="hover-img"
+                    src="product/product-9/prod9.2.webp"
+                    alt="Shirt 9 Hover"
+                  />
+                </div>
+                <p>T-Shirt</p>
+                <h5>Adore</h5>
+                <p>$25</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- Numbered pagination: click a number to load the next set of products -->
+        <div class="prod-pagination" id="prodPagination"></div>
+      </div>
+    </section>
+    <footer>
+      <div class="footer-content">
+        <div class="fo-in">
+          <h5>GET YOURS NOW</h5>
+          <p>
+            <a href="#">SUBSCRIBE TO RECEIVE THE LATEST NEWS AND OFFERS</a>
+          </p>
+          <div class="so-co">
+            <i class="fa-brands fa-tiktok socials"></i>
+            <i class="fa-brands fa-instagram socials"></i>
+            <i class="fa-brands fa-youtube socials"></i>
+            <i class="fa-brands fa-x-twitter socials"></i>
+            <i class="fa-brands fa-facebook-f socials"></i>
+            <i class="fa-regular fa-envelope socials"></i>
+          </div>
+          <div class="co-te-pr">
+            <p>© Copyright 2025 Merch Store All rights reserved.</p>
+            <p><a href="#">Terms of Service</a></p>
+            <p><a href="#">Privacy Policy</a></p>
+          </div>
+        </div>
+
+        <div class="su">
+          <div class="su-h5-p2">
+            <h5>SUPPORT</h5>
+            <p><a href="#">FAQs</a></p>
+            <p><a href="#">Contact</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const basePrice = 20;
+      const colorSelect = document.getElementById("color");
+      const sizeSelect = document.getElementById("size");
+      const quantityInput = document.getElementById("quantity");
+      const priceSpan = document.getElementById("price");
+      const productImage = document.getElementById("productImage");
+
+      const defaultColor = "red";
+      colorSelect.value = defaultColor;
+
+      const updateImage = () => {
+        productImage.src = `product/product-1/Shirt-${
+          colorSelect.selectedIndex + 1
+        }.jpg`;
+      };
+
+      const updatePrice = () => {
+        const sizePrice = parseInt(sizeSelect.selectedOptions[0].dataset.price);
+        const quantity = parseInt(quantityInput.value);
+        const total = (basePrice + sizePrice) * quantity;
+        priceSpan.textContent = total;
+      };
+
+      const addToCart = () => {
+        const product = {
+          color: colorSelect.value,
+          size: sizeSelect.value,
+          quantity: quantityInput.value,
+          totalPrice: priceSpan.textContent,
+        };
+        localStorage.setItem("cart", JSON.stringify(product));
+        window.location.href = "checkout.html";
+      };
+
+      colorSelect.addEventListener("change", updateImage);
+      sizeSelect.addEventListener("change", updatePrice);
+      quantityInput.addEventListener("input", updatePrice);
+
+      updateImage();
+      updatePrice();
+    </script>
+    <script src="script/ham.js"></script>
+    <script src="script/join-us-now.js"></script>
+    <script src="script/cart.js" defer></script>
+    <script src="script/prod-func.js"></script>
+    <script src="script/prev-next.js"></script>
+    <script src="script/abt.js"></script>
+    <script src="script/prod-pagination.js"></script>
+  </body>
+</html>

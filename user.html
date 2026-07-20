@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+    <title>Merch Store</title>
+    <link rel="stylesheet" href="style/prod-st.css" />
+    <link rel="stylesheet" href="style/us-st.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+
+    <!-- Firebase (Authentication + Firestore) -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+    <script src="script/firebase-config.js"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <a class="logo-dest" href="index.html"
+          ><img class="logo" src="assets/logo.png"
+        /></a>
+        <div class="hamburger-btn" id="hamburgerBtn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+      <div class="se-pe-ca">
+        <a class="user-dest" href="user.html"
+          ><i class="fa-regular fa-user"></i
+        ></a>
+
+        <!-- Cart Icon -->
+        <div id="cartIcon" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cartCount">0</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button id="closeCart">&times;</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div style="margin-top: 20px; text-align: center">
+        <div class="cart-footer">
+          <button id="checkoutBtn" class="checkout-btn">Proceed</button>
+        </div>
+      </div>
+    </div>
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <!-- Fullscreen popup navigation -->
+    <div class="mobile-nav-popup" id="mobileNavPopup">
+      <div class="mobile-nav-content">
+        <!-- Close "X" button in top-right -->
+        <div class="close-btn" id="closeBtn">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <!-- Left: Logo -->
+        <img class="mobile-logo" src="assets/logo.png" alt="Logo" />
+
+        <!-- Right: Links -->
+        <div class="mobile-links">
+          <a href="clothing.html">Clothing</a>
+          <a href="accessories.html">Accessories</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="main-wrapper">
+      <div class="profile-container">
+        <!-- Profile Picture Section -->
+        <div class="profile-picture-section">
+          <div id="profileImageWrapper" class="default-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              id="defaultIcon"
+            >
+              <path
+                d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1Zm0 1.5A5.5 5.5 0 1 0 13.5 8 5.5 5.5 0 0 0 8 2.5Z"
+              />
+            </svg>
+
+            <!-- 👇 Add this image element for previewing -->
+            <img
+              id="profilePic"
+              class="profile-picture"
+              alt="Profile"
+              style="display: none"
+            />
+          </div>
+
+          <div class="btn-group">
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              style="display: none"
+            />
+            <button class="btn change" id="changeBtn">Change</button>
+            <button class="btn remove" id="removeBtn">Remove</button>
+          </div>
+        </div>
+
+        <!-- Profile Info Section -->
+        <div class="profile-info">
+          <h2 class="section-header">Profile Information</h2>
+
+          <div class="info-row">
+            <div class="label">First Name:</div>
+            <input type="text" id="nameInput" placeholder="Enter name" />
+          </div>
+
+          <div class="info-row">
+            <div class="label">Middle Name:</div>
+            <input
+              type="text"
+              id="middleInput"
+              placeholder="Enter Middle Name"
+            />
+          </div>
+
+          <div class="info-row">
+            <div class="label">Last Name:</div>
+            <input type="text" id="lastInput" placeholder="Enter Last Name" />
+          </div>
+
+          <div class="info-row">
+            <div class="label">Address:</div>
+            <input
+              type="text"
+              id="addressInput"
+              placeholder="Enter your Address"
+            />
+          </div>
+
+          <div class="info-row">
+            <div class="label">Email:</div>
+            <input type="text" id="emailInput" placeholder="Enter your Email" />
+          </div>
+
+          <div class="info-row">
+            <div class="label">Phone Number:</div>
+            <input type="text" id="phoneInput" placeholder="+63-XXXXXXXXXX" />
+          </div>
+
+          <button id="saveChangesBtn" class="btn">Save Changes</button>
+          <button id="logoutBtn" class="btn" style="margin-left: 10px">
+            Log Out
+          </button>
+
+          <div id="successMsg" class="success-msg">
+            Successfully Changed<span class="success-icon">✔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order History -->
+      <div class="profile-container" style="margin-top: 30px">
+        <div class="profile-info" style="width: 100%">
+          <h2 class="section-header">Order History</h2>
+          <div id="orderHistory">
+            <p>Loading your orders…</p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer-content">
+        <div class="fo-in">
+          <h5>GET YOURS NOW</h5>
+          <p>
+            <a href="#">SUBSCRIBE TO RECEIVE THE LATEST NEWS AND OFFERS</a>
+          </p>
+          <div class="so-co">
+            <i class="fa-brands fa-tiktok socials"></i>
+            <i class="fa-brands fa-instagram socials"></i>
+            <i class="fa-brands fa-youtube socials"></i>
+            <i class="fa-brands fa-x-twitter socials"></i>
+            <i class="fa-brands fa-facebook-f socials"></i>
+            <i class="fa-regular fa-envelope socials"></i>
+          </div>
+          <div class="co-te-pr">
+            <p>© Copyright 2025 Merch All rights reserved.</p>
+            <p><a href="#">Terms of Service</a></p>
+            <p><a href="#">Privacy Policy</a></p>
+          </div>
+        </div>
+
+        <div class="su">
+          <div class="su-h5-p2">
+            <h5>SUPPORT</h5>
+            <p><a href="#">FAQs</a></p>
+            <p><a href="#">Contact</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="script/ham.js"></script>
+    <script src="script/cart.js" defer></script>
+    <script>
+      // Guard: only signed-in visitors get to see the profile page.
+      // Anyone else is sent to sign-up.html to create an account or log in.
+      // onAuthStateChanged fires once Firebase knows whether someone's
+      // logged in (it needs a moment to check, unlike localStorage).
+      let currentUser = null;
+      auth.onAuthStateChanged((user) => {
+        if (!user) {
+          window.location.href = "sign-up.html";
+        } else {
+          currentUser = user;
+          loadProfile(user.uid);
+          loadOrderHistory(user.uid);
+        }
+      });
+    </script>
+    <script>
+      const removeBtn = document.getElementById("removeBtn");
+      const changeBtn = document.getElementById("changeBtn");
+      const fileInput = document.getElementById("fileInput");
+      fileInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const profilePic = document.getElementById("profilePic");
+            const profileImageWrapper = document.getElementById(
+              "profileImageWrapper",
+            );
+
+            profilePic.src = e.target.result;
+            profilePic.style.display = "block";
+            profileImageWrapper.classList.remove("default-icon");
+
+            // Save to localStorage
+            localStorage.setItem("profileImage", e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      const profilePic = document.getElementById("profilePic");
+      const defaultIcon = document.getElementById("defaultIcon");
+      const errorMsg = document.getElementById("errorMsg");
+      const saveBtn = document.getElementById("saveChangesBtn");
+
+      const nameInput = document.getElementById("nameInput");
+      const middleInput = document.getElementById("middleInput");
+      const lastInput = document.getElementById("lastInput");
+      const addressInput = document.getElementById("addressInput");
+      const emailInput = document.getElementById("emailInput");
+      const phoneInput = document.getElementById("phoneInput");
+
+      const successMsg = document.getElementById("successMsg");
+
+      const LOCAL_STORAGE_KEY = "userProfilePicDataURL";
+      const MIN_WIDTH = 100;
+      const MIN_HEIGHT = 100;
+
+      let originalName = "";
+      let originalMiddle = "";
+      let originalLast = "";
+      let originalAddress = "";
+      let originalEmail = "";
+      let originalPhone = "";
+
+      // Disable save button initially
+      saveBtn.disabled = true;
+
+      // Called from the auth guard above, once we know who's logged in.
+      function loadProfile(uid) {
+        db.collection("users")
+          .doc(uid)
+          .get()
+          .then((doc) => {
+            const data = doc.exists ? doc.data() : {};
+
+            originalName = data.firstName || "";
+            originalMiddle = data.middleName || "";
+            originalLast = data.lastName || "";
+            originalAddress = data.address || "";
+            originalEmail = data.email || currentUser.email || "";
+            originalPhone = data.phone || "";
+
+            nameInput.value = originalName;
+            middleInput.value = originalMiddle;
+            lastInput.value = originalLast;
+            addressInput.value = originalAddress;
+            emailInput.value = originalEmail;
+            phoneInput.value = originalPhone;
+
+            saveBtn.disabled = true;
+          })
+          .catch((err) => {
+            console.error("Couldn't load profile:", err);
+          });
+      }
+
+      // Fetches this user's past orders (saved by checkout.html at the
+      // time of purchase) and renders them, most recent first.
+      function loadOrderHistory(uid) {
+        const container = document.getElementById("orderHistory");
+
+        db.collection("users")
+          .doc(uid)
+          .collection("orders")
+          .orderBy("createdAt", "desc")
+          .get()
+          .then((snapshot) => {
+            if (snapshot.empty) {
+              container.innerHTML = "<p>No orders yet.</p>";
+              return;
+            }
+
+            container.innerHTML = snapshot.docs
+              .map((doc) => {
+                const order = doc.data();
+                const date = order.createdAt
+                  ? order.createdAt.toDate().toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })
+                  : "";
+
+                const itemsHTML = (order.items || [])
+                  .map(
+                    (item) =>
+                      `${item.name} x${item.qty} — $${(item.price * item.qty).toFixed(2)}`,
+                  )
+                  .join("<br>");
+
+                return `
+              <div class="order-entry" style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                  <span>${order.orderId || doc.id}</span>
+                  <span>${date}</span>
+                </div>
+                <div style="margin: 8px 0; font-size: 0.9em; color: #555;">
+                  ${itemsHTML}
+                </div>
+                <div style="text-align: right; font-weight: bold;">
+                  Total: $${order.cost ? order.cost.total : "—"}
+                </div>
+              </div>
+            `;
+              })
+              .join("");
+          })
+          .catch((err) => {
+            console.error("Couldn't load order history:", err);
+            container.innerHTML =
+              "<p>Couldn't load your orders right now — try refreshing.</p>";
+          });
+      }
+
+      // Check for input changes to enable the save button
+      function checkForChanges() {
+        const nameChanged = nameInput.value !== originalName;
+        const middleChanged = middleInput.value !== originalMiddle;
+        const lastChanged = lastInput.value !== originalLast;
+        const addressChanged = addressInput.value !== originalAddress;
+        const emailChanged = emailInput.value !== originalEmail;
+        const phoneChanged = phoneInput.value !== originalPhone;
+
+        saveBtn.disabled = !(
+          nameChanged ||
+          middleChanged ||
+          lastChanged ||
+          addressChanged ||
+          emailChanged ||
+          phoneChanged
+        );
+      }
+
+      nameInput.addEventListener("input", checkForChanges);
+      middleInput.addEventListener("input", checkForChanges);
+      lastInput.addEventListener("input", checkForChanges);
+      addressInput.addEventListener("input", checkForChanges);
+      emailInput.addEventListener("input", checkForChanges);
+      phoneInput.addEventListener("input", checkForChanges);
+
+      // Save data and show message
+      saveBtn.addEventListener("click", () => {
+        if (!currentUser) return;
+
+        saveBtn.disabled = true;
+        db.collection("users")
+          .doc(currentUser.uid)
+          .set(
+            {
+              firstName: nameInput.value,
+              middleName: middleInput.value,
+              lastName: lastInput.value,
+              address: addressInput.value,
+              email: emailInput.value,
+              phone: phoneInput.value,
+            },
+            { merge: true },
+          )
+          .then(() => {
+            // Update original values
+            originalName = nameInput.value;
+            originalMiddle = middleInput.value;
+            originalLast = lastInput.value;
+            originalAddress = addressInput.value;
+            originalEmail = emailInput.value;
+            originalPhone = phoneInput.value;
+
+            // Show success message with animation
+            successMsg.classList.add("show");
+            setTimeout(() => {
+              successMsg.classList.remove("show");
+            }, 3000);
+          })
+          .catch((err) => {
+            console.error("Couldn't save profile:", err);
+            alert("Couldn't save your changes — please try again.");
+            saveBtn.disabled = false; // re-enable so they can retry
+          });
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const storedImage = localStorage.getItem("profileImage");
+        const profilePic = document.getElementById("profilePic");
+        const profileImageWrapper = document.getElementById(
+          "profileImageWrapper",
+        );
+
+        if (storedImage) {
+          profilePic.src = storedImage;
+          profilePic.style.display = "block";
+          profileImageWrapper.classList.remove("default-icon");
+        } else {
+          showDefaultProfile();
+        }
+      });
+
+      function showDefaultProfile() {
+        const profilePic = document.getElementById("profilePic");
+        const profileImageWrapper = document.getElementById(
+          "profileImageWrapper",
+        );
+
+        profilePic.style.display = "none";
+        profilePic.src = ""; // Clear the src
+
+        profileImageWrapper.classList.add("default-icon");
+      }
+
+      function showProfilePic(src) {
+        profilePic.src = src;
+        profilePic.style.display = "block";
+        defaultIcon.style.display = "none";
+        errorMsg.textContent = "";
+      }
+
+      function loadProfilePicFromStorage() {
+        const savedDataURL = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (savedDataURL) {
+          showProfilePic(savedDataURL);
+        } else {
+          showDefaultProfile();
+        }
+      }
+
+      // Trigger file input when 'Change' button is clicked
+      changeBtn.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      // Handle file input change
+      fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            if (img.width >= MIN_WIDTH && img.height >= MIN_HEIGHT) {
+              localStorage.setItem(LOCAL_STORAGE_KEY, e.target.result);
+              showProfilePic(e.target.result);
+            } else {
+              errorMsg.textContent = `Image must be at least ${MIN_WIDTH}x${MIN_HEIGHT} pixels.`;
+            }
+          };
+          img.onerror = function () {
+            errorMsg.textContent = "Invalid image file.";
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      removeBtn.addEventListener("click", () => {
+        localStorage.removeItem("profileImage"); // Remove from localStorage
+        showDefaultProfile(); // Reset view
+      });
+
+      loadProfilePicFromStorage();
+
+      // Log out: end the real Firebase session and send the visitor back
+      // to sign-up. (Profile data stays safely in Firestore, tied to
+      // their account, ready for next time they log back in.)
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        auth.signOut().then(() => {
+          window.location.href = "sign-up.html";
+        });
+      });
+    </script>
+  </body>
+</html>
